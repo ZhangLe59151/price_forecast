@@ -32,9 +32,9 @@ train.train()
 ```
 # API Reference
 `TrainModel`   
-### Parameters:   
+#### Parameters:   
 * data_path: a string representing the training data CSV file. When you create an instance of TrainModel class, you can specify the data_path parameter.   
-### Methods:   
+#### Methods:   
 * update_params: After creating an instance of the TrainModel class, you can update the following hyperparameters:   
   - data_path: The data path to your training dataset in CSV format.      
   - n_in: The number of time steps to use as input. The default value is 3.   
