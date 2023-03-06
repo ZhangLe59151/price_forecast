@@ -53,7 +53,7 @@ train.train()
 # train the model
 from sequence_model_train import train_model
 
-train = TrainModel('./train.csv')
+train = train_model.TrainModel('./train.csv')
 train.update_params(n_in=30, n_out=7, batch_size=128, hidden_size=128, num_epochs=100)
 train.train()
 ```
