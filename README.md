@@ -4,7 +4,7 @@ Sequence-model-train is a Python library for implementing Long Short-Term Memory
 Github: ​https://github.com/ZhangLe59151/price_forecast   
 PyPi: ​https://pypi.org/project/sequence-model-train/   
 Document: ​https://zhanglenus.gitbook.io/sequence-model-train-library-document/   
-Example on the notebook:    
+Example on the notebook: https://zhanglenus.gitbook.io/sequence-model-train-library-document/notebook-demo      
 
 # Installation
 To install Library Sequence-model-train, run the following command in your terminal:   
@@ -33,7 +33,7 @@ train.train()
 # API Reference
 `TrainModel`   
 #### Parameters:   
-* data_path: a string representing the training data CSV file. When you create an instance of TrainModel class, you can specify the data_path parameter.   
+* data_path: a string that specifies the path to the training data CSV file. When creating an instance of the TrainModel class, you can provide the 'data_path' parameter to load your data. It is important to note that the last column in the CSV file should be the labels.   
 #### Methods:   
 * update_params: After creating an instance of the TrainModel class, you can update the following hyperparameters:   
   - data_path: The data path to your training dataset in CSV format.      
