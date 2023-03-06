@@ -31,18 +31,18 @@ train.update_params(n_in=30, n_out=7, batch_size=128, hidden_size=128, num_epoch
 train.train()
 ```
 # API Reference
-`TrainModel`
-Parameters:   
-- data_path: a string representing the training data CSV file. When you create an instance of TrainModel class, you can specify the data_path parameter.   
-- Methods:   
-update_params: After creating an instance of the TrainModel class, you can update the following hyperparameters:
-data_path: The data path to your training dataset in CSV format.   
-n_in: The number of time steps to use as input. The default value is 3.   
-n_out: The number of future time steps to predict. The default value is 5.   
-batch_size: The batch size to use during training. The default value is 32.   
-hidden_size: The number of units in the LSTM layer. The default value is 32.   
-num_layers: The number of the LSTM layer. The default value is 3.   
-num_epochs: The number of epochs to train the model for. The default value is 10.   
+`TrainModel`   
+### Parameters:   
+* data_path: a string representing the training data CSV file. When you create an instance of TrainModel class, you can specify the data_path parameter.   
+### Methods:   
+* update_params: After creating an instance of the TrainModel class, you can update the following hyperparameters:   
+- data_path: The data path to your training dataset in CSV format.      
+- n_in: The number of time steps to use as input. The default value is 3.   
+- n_out: The number of future time steps to predict. The default value is 5.   
+- batch_size: The batch size to use during training. The default value is 32.   
+- hidden_size: The number of units in the LSTM layer. The default value is 32.   
+- num_layers: The number of the LSTM layer. The default value is 3.   
+- num_epochs: The number of epochs to train the model for. The default value is 10.   
 - train: Train the model. Training the model involves several steps, including data processing, normalization, and splitting into training and validation sets. Once trained, the model's performance is evaluated on the validation set using metrics such as loss, mean absolute error (MAE), and mean absolute percentage error (MAPE).   
 # Example
 ```
