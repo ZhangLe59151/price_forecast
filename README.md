@@ -1,10 +1,14 @@
 # sequence-model-train
 Sequence-model-train is a Python library for implementing Long Short-Term Memory (LSTM) models on time-series data. It takes a CSV file as input and allows you to specify various hyperparameters for the model.    
    
-Github: ​https://github.com/ZhangLe59151/price_forecast   
-PyPi: ​https://pypi.org/project/sequence-model-train/   
-Document: ​https://zhanglenus.gitbook.io/sequence-model-train-library-document/   
-Example on the notebook: https://zhanglenus.gitbook.io/sequence-model-train-library-document/notebook-demo      
+Github:   
+​https://github.com/ZhangLe59151/price_forecast   
+PyPi:   
+​https://pypi.org/project/sequence-model-train/   
+Document:    
+​https://zhanglenus.gitbook.io/sequence-model-train-library-document/   
+Example on the notebook:   
+https://zhanglenus.gitbook.io/sequence-model-train-library-document/notebook-demo      
 
 # Installation
 To install Library Sequence-model-train, run the following command in your terminal:   
