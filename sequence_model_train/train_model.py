@@ -6,8 +6,8 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import StandardScaler
 
-from data_process import data_pipeline
-from lstm_model import LSTMModel
+from .data_process import data_pipeline
+from .lstm_model import LSTMModel
 
 class TrainModel:
     def __init__(self, data_path):
