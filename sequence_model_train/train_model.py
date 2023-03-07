@@ -123,8 +123,6 @@ class TrainModel:
 
         with torch.no_grad():
             for inputs, targets in valid_loader:
-                print(inputs.shape)
-                print(targets.shape)
                 outputs = model(inputs)
                 loss = criterion(outputs, targets.squeeze())
                 mae = mae_func(outputs, targets.squeeze())
