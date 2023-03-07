@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="sequence_model_train",
-    version="0.1.15",
+    version="0.1.37",
     author="ZhangLe",
     author_email="zhanglenlp@gmail.com",
     description="time series model for training sequence dataset",
@@ -23,11 +23,11 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     packages=setuptools.find_packages("."),
-    install_requires = [
+    install_requires=[
       'torch>=1.6.0',
       'pandas>=1.3.5',
-      'numpy>=1.21.5', 
-      'DateTime>=4.4', 
+      'numpy>=1.21.5',
+      'DateTime>=4.4',
       'xgboost>=1.2.0',
       'scikit-learn>=1.0.2',
       'keras-tcn>=3.4.0',
