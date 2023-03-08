@@ -33,6 +33,7 @@ class TimeSeriesDataset(Dataset):
         self.data = self.data.drop(columns='DATE')
 
         # apply normalization
+        '''
         if self.normalize:
             self.mean = self.data.iloc[:, :-1].mean(axis=0)
             self.std = self.data.iloc[:, :-1].std(axis=0)
@@ -40,6 +41,7 @@ class TimeSeriesDataset(Dataset):
         column_label = self.data.columns.values[-1]
         self.data = (self.data.iloc[:, :-1] - self.mean) / self.std
         self.data[column_label] = data_label
+        '''
 
     def get_mean_std(self):
         return self.mean, self.std

@@ -90,9 +90,7 @@ class TrainModel:
         if self.model_type == 'lstm':
             model = LSTMModel(**params)
         if self.model_type == 'tcn':
-            num_channels = [self.features_size]
-            for i in range(self.num_layers-1):
-                num_channels.append(self.hidden_size)
+            num_channels = [self.features_size] + [self.hidden_size for i in range(self.num_layers-1)]
             model = TCN(input_size=self.features_size,
                         output_size=self.n_out,
                         num_channels=num_channels,
@@ -168,7 +166,7 @@ class TrainModel:
             'output_size': self.n_out,
         }
         self.model = load_model(model_path=model_path,
-                                type='lstm',
+                                type=self.model_type,
                                 params=params)
         return self.model
 

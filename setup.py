@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="sequence_model_train",
-    version="0.2.10",
+    version="0.2.16",
     author="ZhangLe",
     author_email="zhanglenlp@gmail.com",
     description="time series model for training sequence dataset",
