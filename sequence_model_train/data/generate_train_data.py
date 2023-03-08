@@ -33,8 +33,7 @@ class GenerateTrainData:
         self.set_column_order('USEP')
         pipeline = get_pipeline()
         pipeline.fit(self.df)
-        data = pipeline.transform(self.df)
-        self.data = data
+        self.df = pipeline.transform(self.df)
         if self.save_data:
             self.df.to_csv(self.save_path, index=False)
         return self.df

@@ -2,9 +2,10 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-from .models.lstm_model import LSTMModel
-from .utils.timeseries_dataset import TimeSeriesDataset
-from .utils.model_process import load_model
+from ..models.lstm_model import LSTMModel
+from ..models.tcn_model import TCN
+from ..data.timeseries_dataset import TimeSeriesDataset
+from .model_process import load_model
 
 
 class TrainModel:
@@ -21,6 +22,7 @@ class TrainModel:
         self.train_end_date = None
         self.valid_start_date = None
         self.valid_end_date = None
+        self.model_type = 'lstm'
         self.model = None
         self.model_path = None
         self.result = None
@@ -39,6 +41,7 @@ class TrainModel:
         train_end_date, train data end at date, default = '2022-12-31'
         valid_start_date, valid data start from date, default = '2023-01-01'
         valid_start_date, valid data end at date, default = '2023-02-23'
+        model_type,  model type,      default = 'lstm'
         '''
         self.train_data_path = kwargs.get('data_path', self.train_data_path)
         self.n_in = kwargs.get('n_in', self.n_in)
@@ -51,6 +54,7 @@ class TrainModel:
         self.train_end_date = kwargs.get('train_end_date', self.train_end_date)
         self.valid_start_date = kwargs.get('valid_start_date', self.valid_start_date)
         self.valid_end_date = kwargs.get('valid_end_date', self.valid_end_date)
+        self.model_type = kwargs.get('model_type', self.model_type)
 
     def train(self):
         train_dataset = TimeSeriesDataset(self.train_data_path,
@@ -83,7 +87,17 @@ class TrainModel:
             'num_layers': self.num_layers,
             'output_size': self.n_out,
         }
-        model = LSTMModel(**params)
+        if self.model_type == 'lstm':
+            model = LSTMModel(**params)
+        if self.model_type == 'tcn':
+            num_channels = [self.features_size]
+            for i in range(self.num_layers-1):
+                num_channels.append(self.hidden_size)
+            model = TCN(input_size=self.features_size,
+                        output_size=self.n_out,
+                        num_channels=num_channels,
+                        kernel_size=3,
+                        dropout=0.2)
         criterion = nn.MSELoss()
         optimizer = torch.optim.AdamW(model.parameters())
 
@@ -94,9 +108,9 @@ class TrainModel:
             num_samples = 0.0
             for i, (inputs, labels) in enumerate(train_loader):
                 model.train()
+                optimizer.zero_grad()
                 output = model(inputs)
                 loss = criterion(output, labels.squeeze())
-                optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
                 loss_0 += loss.item() * len(inputs)
@@ -159,7 +173,7 @@ class TrainModel:
         return self.model
 
     def predict(self, model_path=None, pred_data=None):
-        model = self.load_model(model_path)
+        model = self.load_model_(model_path)
         model.eval()
         # use the loaded model to make predictioins
         if not isinstance(pred_data, torch.Tensor):
