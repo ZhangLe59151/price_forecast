@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="sequence_model_train",
-    version="0.2.47",
+    version="0.2.71",
     author="ZhangLe",
     author_email="zhanglenlp@gmail.com",
     description="time series model for training sequence dataset",
@@ -31,6 +31,7 @@ setuptools.setup(
       'xgboost>=1.2.0',
       'scikit-learn>=1.0.2',
       'keras-tcn>=3.4.0',
+      'ngboost>=0.3.13',
       'matplotlib>=3.1.1',
       'pickleshare>=0.7.5',
       'cloudpickle>=1.2.2',

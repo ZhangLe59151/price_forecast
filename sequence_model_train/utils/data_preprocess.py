@@ -79,3 +79,25 @@ def get_uniq_data(data_path, n_out=None):
     else:
         df_train, df_valid = split_train_valid(df)
     return df_train, df_valid
+
+
+def get_tbase_data(data_path,
+                   n_in,
+                   n_out):
+    df = load_dataset(data_path, dtype='pandas')
+    shift_columns = df.select_dtypes(include=['float']).columns.values
+    label_columns = df.iloc[:, -1:].columns.values[0]
+    columns = [label_columns]
+    for i in range(n_in):
+        for name in shift_columns:
+            new_name = name + '_shift_' + str(i+1)
+            df[new_name] = df[name].shift(i+1)
+    for i in range(1, n_out):
+        new_name = label_columns + '_p_' + str(i)
+        columns.append(new_name)
+        df[new_name] = df[name].shift(-i)
+    df = df.dropna(axis=0)
+    train_size = df.shape[0] - n_out
+    d_train = df[0:train_size]
+    d_valid = df[train_size:]
+    return d_train, d_valid, columns

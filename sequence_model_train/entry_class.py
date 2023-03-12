@@ -2,6 +2,7 @@ import torch
 from .utils import data_preprocess, model_process
 from .utils.train_nn import TrainNNModel
 from .models.arima_model import ARIMAModel
+from .models.ngboost_model import NGBoostModel
 
 
 class Offline:
@@ -11,7 +12,7 @@ class Offline:
         self.support_models = {
             'nn': ['lstm', 'tcn'],
             'arma': ['arima'],
-            'tbase': ['xgb']
+            'tbase': ['xgb', 'ngboost']
         }
         self.data_prams = {
             'train_data_path': None,
@@ -32,6 +33,7 @@ class Offline:
             'model_path': None
         }
         self.result = None
+        self.config = None
 
     def update_params(self, **kwargs):
         self.model = kwargs.get('model', self.model)
@@ -114,6 +116,17 @@ class Offline:
                 self.data_prams['train_data_path'],
                 self.model_params['n_out'])
             model = ARIMAModel(self.model_params['n_out'])
+        if self.model_type in self.support_models['tbase']:
+            t_, v_, c = data_preprocess.get_tbase_data(
+                self.data_prams['train_data_path'],
+                self.model_params['n_in'],
+                self.model_params['n_out']
+            )
+            model = NGBoostModel(
+                c,
+                self.model_params['n_in'],
+                self.model_params['n_out']
+            )
         self.model = model.fit(t_, v_)
         self.result = model.get_base_line()
         return self.result
@@ -125,6 +138,9 @@ class Offline:
         if self.model_type in self.support_models['arma']:
             model_process.save_model(self.model_params['model_path'],
                                      self.model)
+        if self.model_type in self.support_models['tbase']:
+            model_process.save_model_2(self.model_params['model_path'],
+                                       self.model)
 
     def load_model(self):
         if self.model_type in self.support_models['nn']:
@@ -142,6 +158,10 @@ class Offline:
             self.model = model_process.load_model(
                 self.model_params['model_path']
             )
+        if self.model_type in self.support_models['tbase']:
+            self.model = model_process.load_model_2(
+                self.model_params['model_path']
+            )
 
     def predict(self, X):
         if self.model_type in self.support_models['nn']:
@@ -153,4 +173,8 @@ class Offline:
             pred_y = self.model(x).detach().numpy()
         if self.model_type in self.support_models['arma']:
             pred_y = self.model.forecast(self.model_params['n_out'])
+        if self.model_type in self.support_models['tbase']:
+            pred_y = []
+            for item in self.model:
+                pred_y(item.predict(X))
         return pred_y
