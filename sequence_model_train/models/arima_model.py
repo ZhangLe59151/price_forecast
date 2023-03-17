@@ -21,7 +21,7 @@ class ARIMAModel:
 
     def get_base_line(self):
         pred_y = self.predict(self.n_out)
-        mse, mae, mape = caculate_eval(pred_y, self.label_set)
+        mse, rmse, mae, mape = caculate_eval(pred_y, self.label_set)
         # mse = mean_squared_error(self.label_set, pred_y)
         # mae = mean_absolute_error(self.label_set, pred_y)
         # mape = mean_absolute_percentage_error(self.label_set, pred_y)
@@ -29,6 +29,7 @@ class ARIMAModel:
             model='arima',
             valid_result=dict(
                 valid_loss=mse,
+                valid_rmse=rmse,
                 valid_mae=mae,
                 valid_mape=mape
             ),

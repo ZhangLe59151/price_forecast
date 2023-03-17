@@ -55,6 +55,7 @@ class TrainModel:
         self.valid_start_date = kwargs.get('valid_start_date', self.valid_start_date)
         self.valid_end_date = kwargs.get('valid_end_date', self.valid_end_date)
         self.model_type = kwargs.get('model_type', self.model_type)
+        self.kernal_size = kwargs.get('kernal_size', self.kernal_size)
 
     def train(self):
         train_dataset = TimeSeriesDataset(self.train_data_path,
@@ -94,7 +95,7 @@ class TrainModel:
             model = TCN(input_size=self.features_size,
                         output_size=self.n_out,
                         num_channels=num_channels,
-                        kernel_size=3,
+                        kernel_size=self.kernal_size,
                         dropout=0.2)
         criterion = nn.MSELoss()
         optimizer = torch.optim.AdamW(model.parameters())

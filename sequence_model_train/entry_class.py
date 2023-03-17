@@ -22,7 +22,7 @@ class Offline:
             'valid_end_date': '2023-03-01'
         }
         self.model_params = {
-            'n_features': 10,
+            'n_features': 12,
             'n_in': 30,
             'n_out': 7,
             'batch_size': 32,
@@ -30,7 +30,8 @@ class Offline:
             'num_layers': 3,
             'input_size': 10,
             'num_epochs': 100,
-            'model_path': None
+            'model_path': None,
+            'kernel_size': 3
         }
         self.result = None
         self.config = None
@@ -69,6 +70,10 @@ class Offline:
         self.model_params['model_path'] = kwargs.get(
             'model_path',
             self.model_params['model_path']
+        )
+        self.model_params['kernel_size'] = kwargs.get(
+            'kernel_size',
+            self.model_params['kernel_size']
         )
         self.data_prams['train_data_path'] = kwargs.get(
             'train_data_path',
@@ -110,7 +115,9 @@ class Offline:
                 'output_size': self.model_params['n_out'],
                 'num_epochs': self.model_params['num_epochs'],
             }
-            model = TrainNNModel(params, self.model_type)
+            model = TrainNNModel(params,
+                                 self.model_type,
+                                 self.model_params['kernel_size'])
         if self.model_type in self.support_models['arma']:
             t_, v_ = data_preprocess.get_uniq_data(
                 self.data_prams['train_data_path'],
@@ -147,6 +154,7 @@ class Offline:
             self.model = model_process.load_nn_model(
                 self.model_params['model_path'],
                 self.model_type,
+                self.model_params['kernel_size'],
                 params={
                     'input_size': self.model_params['n_features'],
                     'hidden_size': self.model_params['hidden_size'],

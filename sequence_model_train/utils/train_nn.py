@@ -6,14 +6,15 @@ from ..models.tcn_model import TCN
 
 
 class TrainNNModel:
-    def __init__(self, params, model_type):
+    def __init__(self, params, model_type, kernal_size=3):
         self.model_type = model_type
         self.model_params = {
             'input_size': params['input_size'],
             'hidden_size': params['hidden_size'],
             'num_layers': params['num_layers'],
             'output_size': params['output_size'],
-            'num_epochs': params['num_epochs']
+            'num_epochs': params['num_epochs'],
+            'kernel_size': kernal_size
         }
         self.train_dataloader = None
         self.valid_dataloader = None
@@ -34,7 +35,7 @@ class TrainNNModel:
             model = TCN(input_size=params['input_size'],
                         output_size=params['output_size'],
                         num_channels=num_channels,
-                        kernel_size=3,
+                        kernel_size=self.model_params['kernel_size'],
                         dropout=0.2)
         criterion = nn.MSELoss()
         optimizer = torch.optim.AdamW(model.parameters())
@@ -69,6 +70,7 @@ class TrainNNModel:
         mape_func = nn.L1Loss()
         num_samples = 0.0
         total_loss = 0
+        total_rmse = 0
         total_mae = 0
         total_mape = 0
 
@@ -77,10 +79,12 @@ class TrainNNModel:
                 outputs = model(inputs)
                 loss = criterion(outputs, targets.squeeze())
                 mae = mae_func(outputs, targets.squeeze())
+                rmse = torch.sqrt(loss)
                 mape = mape_func((outputs - targets.squeeze()).abs()
                                  / targets.squeeze(),
                                  torch.zeros_like(targets.squeeze()))
                 total_loss += loss.item() * len(inputs)
+                total_rmse += rmse.item() * len(inputs)
                 total_mae += mae.item() * len(inputs)
                 total_mape += mape.item() * len(inputs)
                 num_samples += len(inputs)
@@ -89,6 +93,7 @@ class TrainNNModel:
             model=self.model_type,
             valid_result=dict(
                 valid_loss=total_loss / num_samples,
+                valid_rmse=total_rmse / num_samples,
                 valid_mae=total_mae / num_samples,
                 valid_mape=total_mape / num_samples
             ),

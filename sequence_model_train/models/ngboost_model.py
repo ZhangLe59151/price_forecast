@@ -41,12 +41,13 @@ class NGBoostModel:
                         y[columns_].values[i-self.n_out:i+1-self.n_out, :]
                     )[0]
                 )
-        mse, mae, mape = caculate_eval(pred_y,
+        mse, rmse, mae, mape = caculate_eval(pred_y,
                                        y[self.columns].values[0:1, :][0])
         self.result = dict(
             model='ngboost',
             valid_result=dict(
                 valid_loss=mse,
+                valid_rmse=rmse,
                 valid_mae=mae,
                 valid_mape=mape
             ),
